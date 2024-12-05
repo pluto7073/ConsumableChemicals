@@ -37,10 +37,10 @@ dependencies {
 	modImplementation("net.fabricmc:fabric-loader:$loader_version")
 
 	// dev env
-//	modLocalRuntime("maven.modrinth:suggestion-tweaker:$suggestion_tweaker_version")
-//	modLocalRuntime("maven.modrinth:cloth-config:$cloth_config_version") { exclude(group: "net.fabricmc.fabric-api") }
-//	modLocalRuntime("maven.modrinth:jade:$jade_version")
-//	modLocalRuntime("com.terraformersmc:modmenu:$modmenu_version") { exclude(group: "net.fabricmc"); exclude(group: "net.fabricmc.fabric-api") }
+	modLocalRuntime("maven.modrinth:suggestion-tweaker:$suggestion_tweaker_version")
+	modLocalRuntime("maven.modrinth:cloth-config:$cloth_config_version") { exclude(group: "net.fabricmc.fabric-api") }
+	modLocalRuntime("maven.modrinth:jade:$jade_version")
+	modLocalRuntime("com.terraformersmc:modmenu:$modmenu_version") { exclude(group: "net.fabricmc"); exclude(group: "net.fabricmc.fabric-api") }
 
 	// dependencies
 	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_version")
@@ -128,13 +128,6 @@ publishing {
 	}
 
 	repositories {
-		maven {
-			url = "https://mvn.devos.one/${System.getenv("PUBLISH_SUFFIX")}/"
-			credentials {
-				username = System.getenv("MAVEN_USER")
-				password = System.getenv("MAVEN_PASS")
-			}
-			authentication { basic(BasicAuthentication) }
-		}
+		
 	}
 }
