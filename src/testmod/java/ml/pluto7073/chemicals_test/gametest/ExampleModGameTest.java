@@ -1,6 +1,6 @@
-package io.github.tropheusj.modid_test.gametest;
+package ml.pluto7073.chemicals_test.gametest;
 
-import io.github.tropheusj.modid_test.ExampleModTest;
+import ml.pluto7073.chemicals_test.ExampleModTest;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;

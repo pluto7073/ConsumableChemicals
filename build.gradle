@@ -12,9 +12,7 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = archives_base_name
 group = maven_group
 
-String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-String patch = buildNumber != null ? buildNumber : "99999"
-version = mod_version.replace("<build>", patch)
+version = minecraft_version + "+" + mod_version
 
 repositories {
 	maven { url = "https://maven.quiltmc.org/repository/release" }
@@ -60,10 +58,11 @@ tasks.register("buildOrPublish") {
 
 processResources {
 	Map<String, String> properties = new HashMap<>()
-	properties.put("version", version)
+	properties.put("version", mod_version)
 	properties.put("loader_version", loader_version)
 	properties.put("fabric_version", fabric_version)
 	properties.put("minecraft_dependency", minecraft_dependency)
+	properties.put("class_4175", "\$class_4175")
 
 	properties.forEach((k, v) -> inputs.property(k, v))
 
@@ -82,6 +81,8 @@ sourceSets {
 }
 
 loom {
+	accessWidenerPath = file("src/main/resources/chemicals.accesswidener")
+
 	runs {
 		testmodClient {
 			client()
@@ -112,6 +113,10 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
 	withSourcesJar()
+	withJavadocJar()
+
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
@@ -123,11 +128,20 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+			artifactId = 'chemicals'
+
 			from components.java
+
+			pom.withXml {
+				Node pom = asNode()
+				pom.dependencies.'*'.each() {
+					it.parent().remove(it)
+				}
+			}
 		}
 	}
 
 	repositories {
-		
+		maven { url = System.getenv("PUBLISH_LOCATION") }
 	}
 }

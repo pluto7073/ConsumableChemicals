@@ -1,25 +1,32 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "chemicals",
   "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Consumable Chemicals",
+  "description": "A library mod that provides functionality for chemicals that can be consumed by players",
   "authors": [
-    "Tropheus Jay"
+    "Pluto7073"
   ],
   "contact": {
-    "sources": "https://github.com/TropheusJ/fabric-example-mod"
+    "sources": "https://github.com/pluto7073/ConsumableChemicals/"
   },
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/chemicals/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.tropheusj.modid.ExampleMod"
+      "ml.pluto7073.chemicals.Chemicals"
     ]
   },
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_4174": [ "ml/pluto7073/chemicals/item/internal/ChemicalHolder" ],
+      "net/minecraft/class_4174$class_4175": [ "ml/pluto7073/chemicals/item/internal/ChemicalHolderBuilder" ]
+    }
+  },
+  "accessWidener": "chemicals.accesswidener",
   "mixins": [
-    "modid.mixins.json"
+    "chemicals.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

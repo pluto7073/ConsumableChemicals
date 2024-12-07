@@ -1,24 +1,24 @@
 {
   "schemaVersion": 1,
-  "id": "modid_test",
+  "id": "chemicals_test",
   "version": "1.0.0",
-  "name": "Example Mod Test",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Chemical Mod Test",
+  "description": "",
   "authors": [
-    "Tropheus Jay"
+    "Pluto7073"
   ],
   "contact": {
     "sources": "https://github.com/TropheusJ/fabric-example-mod"
   },
   "license": "MIT",
-  "icon": "assets/modid_test/icon.png",
+  "icon": "assets/chemicals_test/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.tropheusj.modid_test.ExampleModTest"
+      "ml.pluto7073.chemicals_test.ExampleModTest"
     ],
     "fabric-gametest": [
-      "io.github.tropheusj.modid_test.gametest.ExampleModGameTest"
+      "ml.pluto7073.chemicals_test.gametest.ExampleModGameTest"
     ]
   }
 }

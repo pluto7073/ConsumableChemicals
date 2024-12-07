@@ -1,0 +1,6 @@
+{
+  "command.chemical.get.response": "%1$s has %2$s of %3$s in their system",
+  "command.chemical.set.response": "Set amount of %1$s in %2$s to %3$s",
+  "command.chemical.change.response": "Added %1$s of %2$s to %3$s, for a new total of %4$s",
+  "tooltip.chemicals.amount": "Contains %1$s of %2$s"
+}
