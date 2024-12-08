@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 
 import ml.pluto7073.chemicals.Chemicals;
 import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
-import ml.pluto7073.chemicals.item.ChemicalContainingItem;
+import ml.pluto7073.chemicals.item.ChemicalContaining;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -53,9 +53,26 @@ public abstract class ItemStackMixin {
 		}
 	}
 
+	@Inject(
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;" +
+							"Lnet/minecraft/world/level/Level;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V"),
+			method = "getTooltipLines"
+	)
+	private void chemicals$AddChemicalTooltipForChemicalContaining(Player player, TooltipFlag context, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+		if (!(getItem() instanceof ChemicalContaining item)) return;
+		if (!(context.isCreative() || context.isAdvanced())) return;
+		Chemicals.REGISTRY.forEach(handler -> {
+			float amount = item.getChemicalContent(handler.getId(), chem$This());
+			if (amount <= 0) return;
+			handler.appendTooltip(list, amount, chem$This());
+		});
+	}
+
 	@Inject(at = @At("HEAD"), method = "finishUsingItem")
 	private void chemicals$AddChemicalsToPlayer(Level level, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
-		if (!(user instanceof Player player) || level.isClientSide || !(getItem() instanceof ChemicalContainingItem item)) return;
+		if (!(user instanceof Player player) || level.isClientSide || !(getItem() instanceof ChemicalContaining item)) return;
 		UseAnim anim = getItem().getUseAnimation(chem$This());
 		if (!anim.equals(UseAnim.DRINK) && !anim.equals(UseAnim.EAT)) return;
 		for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {

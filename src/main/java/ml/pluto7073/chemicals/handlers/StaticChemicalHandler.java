@@ -10,6 +10,10 @@ public abstract class StaticChemicalHandler extends ConsumableChemicalHandler {
 
 	protected final float maxAmount;
 
+	/**
+	 * Creates a new StaticChemicalHandler instance
+	 * @param maxAmount The maximum amount of this chemical, or <code>0</code> if no limit is desired
+	 */
 	public StaticChemicalHandler(float maxAmount) {
 		this.maxAmount = maxAmount;
 	}
@@ -18,7 +22,7 @@ public abstract class StaticChemicalHandler extends ConsumableChemicalHandler {
 
 	@Override
 	public void tickPlayer(Player player) {
-		if (get(player) > maxAmount) {
+		if (get(player) > maxAmount && maxAmount > 0) {
 			set(player, 0);
 			onMaxAmountReached(player);
 		}

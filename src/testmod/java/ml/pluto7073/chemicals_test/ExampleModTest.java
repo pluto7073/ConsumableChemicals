@@ -4,11 +4,14 @@ import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
 import net.minecraft.world.food.FoodProperties;
 
 import net.minecraft.world.item.Item;
+
+import net.minecraft.world.item.ItemStack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
