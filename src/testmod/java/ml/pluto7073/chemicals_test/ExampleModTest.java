@@ -29,7 +29,6 @@ public class ExampleModTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		WaterHandler.init();
-		new CompoundTag().getFl
 		Registry.register(BuiltInRegistries.ITEM, id("water_pill"), WATER_PILL_ITEM);
 	}
 
