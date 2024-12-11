@@ -159,4 +159,18 @@ public abstract class ConsumableChemicalHandler {
 		return null;
 	}
 
+	/**
+	 * Store any extra data required for the Chemical Handler
+	 * @param player The player to store data from
+	 * @param tag The CompoundTag to store the data in
+	 */
+	public void saveExtraPlayerData(Player player, CompoundTag tag) {}
+
+	/**
+	 * Load any extra data required for the Chemical Handler
+	 * @param player The player to load to
+	 * @param tag The tag to load from
+	 */
+	public void loadExtraPlayerData(Player player, CompoundTag tag) {}
+
 }

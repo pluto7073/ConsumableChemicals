@@ -32,22 +32,26 @@ public abstract class ServerPlayerMixin extends Player {
 	private void chemicals$ReadChemicalData(CompoundTag nbt, CallbackInfo ci) {
 		if (!nbt.contains("Chemicals")) return;
 		CompoundTag data = nbt.getCompound("Chemicals");
-		for (String key : data.getAllKeys()) {
-			ResourceLocation id = new ResourceLocation(key);
-			float amount = data.getFloat(key);
-			Chemicals.REGISTRY.getOptional(id).ifPresent(handler -> handler.set(this, amount));
+		CompoundTag extra = data.contains("ExtraData") ? data.getCompound("ExtraData") : new CompoundTag();
+		for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {
+			handler.loadExtraPlayerData(this, extra);
+			if (!data.contains(handler.getId().toString())) continue;
+			float amount = data.getFloat(handler.getId().toString());
+			handler.set(this, amount);
 		}
 	}
 
 	@Inject(at = @At("TAIL"), method = "addAdditionalSaveData")
 	private void chemicals$SaveChemicalData(CompoundTag nbt, CallbackInfo ci) {
 		CompoundTag tag = new CompoundTag();
+		CompoundTag extra = new CompoundTag();
 		for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {
+			handler.saveExtraPlayerData(this, extra);
 			float amount = handler.get(this);
 			if (amount == 0) continue;
-			ResourceLocation id = Chemicals.REGISTRY.getResourceKey(handler).orElseThrow().location();
-			tag.putFloat(id.toString(), amount);
+			tag.putFloat(handler.getId().toString(), amount);
 		}
+		tag.put("ExtraData", extra);
 		nbt.put("Chemicals", tag);
 	}
 
