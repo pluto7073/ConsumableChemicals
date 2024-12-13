@@ -1,6 +1,6 @@
 package ml.pluto7073.chemicals.mixin;
 
-import com.ibm.icu.impl.locale.XCldrStub;
+import com.google.common.collect.ImmutableMap;
 
 import ml.pluto7073.chemicals.item.internal.ChemicalHolder;
 import ml.pluto7073.chemicals.item.internal.ChemicalHolderBuilder;
@@ -29,7 +29,7 @@ public class FoodPropertiesMixin implements ChemicalHolder {
 
 	@Override
 	public Map<ResourceLocation, Float> getChemicals() {
-		return XCldrStub.ImmutableMap.copyOf(chemicals$Chemicals);
+		return ImmutableMap.copyOf(chemicals$Chemicals);
 	}
 
 	@Mixin(FoodProperties.Builder.class)
