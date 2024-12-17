@@ -19,10 +19,7 @@
     ]
   },
   "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/class_4174": [ "ml/pluto7073/chemicals/item/internal/ChemicalHolder" ],
-      "net/minecraft/class_4174$class_4175": [ "ml/pluto7073/chemicals/item/internal/ChemicalHolderBuilder" ]
-    }
+    "loom:injected_interfaces": {}
   },
   "accessWidener": "chemicals.accesswidener",
   "mixins": [

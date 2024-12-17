@@ -1,5 +1,6 @@
 package ml.pluto7073.chemicals_test;
 
+import ml.pluto7073.chemicals.component.ChemicalMap;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.core.Registry;
@@ -20,11 +21,10 @@ public class ExampleModTest implements ModInitializer {
 	public static final String ID = "chemicals_test";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
-	public static final FoodProperties WATER_PILL = new FoodProperties.Builder()
-			.alwaysEat().addChemical(id("water"), 100.0f)
-			.fast().build();
-
-	public static final Item WATER_PILL_ITEM = new Item(new Item.Properties().food(WATER_PILL));
+	public static final Item WATER_PILL_ITEM = new Item(new Item.Properties()
+			.component(ChemicalMap.COMPONENT_TYPE,
+					new ChemicalMap.Builder().add(id("water"), 100f).build())
+			.food(new FoodProperties.Builder().fast().alwaysEdible().build()));
 
 	@Override
 	public void onInitialize() {

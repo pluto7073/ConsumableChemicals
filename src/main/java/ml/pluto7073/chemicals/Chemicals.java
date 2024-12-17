@@ -1,6 +1,7 @@
 package ml.pluto7073.chemicals;
 
 import ml.pluto7073.chemicals.commands.ChemicalCommands;
+import ml.pluto7073.chemicals.component.ChemicalMap;
 import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
@@ -20,6 +21,7 @@ public class Chemicals implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ChemicalMap.init();
 		ChemicalCommands.register();
 
 		LogManager.getLogger("Chemicals").info("Ready to consume the chemicals");

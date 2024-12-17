@@ -2,6 +2,8 @@ package ml.pluto7073.chemicals.handlers;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
+import com.mojang.serialization.Codec;
+
 import ml.pluto7073.chemicals.Chemicals;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
@@ -62,9 +64,6 @@ public abstract class ConsumableChemicalHandler {
 
 				@Override
 				public void set(Player player, float amount) {}
-
-				@Override
-				public void defineDataForPlayer(SynchedEntityData data) {}
 			});
 
 	protected final EntityDataAccessor<Float> accessor;
@@ -119,7 +118,7 @@ public abstract class ConsumableChemicalHandler {
 	 */
 	public abstract Collection<MobEffectInstance> getEffectsForAmount(float amount, Level level);
 
-	public void defineDataForPlayer(SynchedEntityData data) {
+	public void defineDataForPlayer(SynchedEntityData.Builder data) {
 		data.define(accessor, 0f);
 	}
 

@@ -1,6 +1,9 @@
 package ml.pluto7073.chemicals.mixin;
 
 import ml.pluto7073.chemicals.Chemicals;
+import ml.pluto7073.chemicals.component.ChemicalMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,17 +28,17 @@ public abstract class PlayerMixin extends LivingEntity {
 	}
 
 	@Inject(at = @At("TAIL"), method = "defineSynchedData")
-	private void chemicals$DefineChemicalTrackers(CallbackInfo ci) {
-		Chemicals.REGISTRY.forEach(handler -> handler.defineDataForPlayer(getEntityData()));
+	private void chemicals$DefineChemicalTrackers(SynchedEntityData.Builder builder, CallbackInfo ci) {
+		Chemicals.REGISTRY.forEach(handler -> handler.defineDataForPlayer(builder));
 	}
 
 	@Inject(at = @At("HEAD"), method = "eat")
 	private void chemicals$ConsumeFoodWithChemicals(Level world, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
-		FoodProperties food = stack.getItem().getFoodProperties();
-		if (food == null) return;
-		food.getChemicals().forEach((id, amount) -> {
-			Objects.requireNonNull(Chemicals.REGISTRY.get(id)).add((Player) (Object) this, amount);
-		});
+		if (!stack.has(ChemicalMap.COMPONENT_TYPE)) return;
+		ChemicalMap chemicals = stack.get(ChemicalMap.COMPONENT_TYPE);
+		if (chemicals == null) return;
+		chemicals.chemicals().forEach((id, amount) ->
+				Objects.requireNonNull(Chemicals.REGISTRY.get(id)).add((Player) (Object) this, amount));
 	}
 
 }
