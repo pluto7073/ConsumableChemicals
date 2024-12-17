@@ -104,12 +104,13 @@ other registration being done.
 ```java
 public class ExampleHandler extends HalfLifeChemicalHandler {
 
+    public static final ResourceLocation EXAMPLE_CHEMICAL = new ResourceLocation("modid", "example_chemicals");
     public static final ExampleHandler INSTANCE = new ExampleHandler();
 
     [...]
 
     public static void init() {
-        Registry.register(Chemicals.REGISTRY, new ResourceLocation("modid", "example_chemical"), INSTANCE);
+        Registry.register(Chemicals.REGISTRY, EXAMPLE_CHEMICAL, INSTANCE);
     }
 
 }
@@ -127,24 +128,22 @@ public class ExampleMod implements ModInitializer {
 }
 ```
 
-## Adding Chemicals to Foods
+## Adding Chemicals to Foods and Items
 
 You have just added your chemical to the game! You can use the `/chemicals` command to edit a player's chemical levels to test it out,
-but now you need an in-game way to consume your chemical.  The simplest way to do this is to add it to a `FoodProperties` instance.
-A new method has been added to the FoodProperties builder to add a chemical to the food.  This takes in a ResourceLocation representing
-the chemical (or the ChemicalHandler itself) and the amount.
+but now you need an in-game way to consume your chemical.  The easiest way is to add it to an item using Item Components.  To add a
+default amount of the chemical to an item, use `ChemicalMap.COMPONENT_TYPE` and `ChemicalMap.Builder` to add it to the item.  This can
+then be added to a food item or some other consumable item.
 
 `ExampleItems.java`
 ```java
 public class ExampleItems {
 
     public static final FoodProperties CHEMICAL_FOOD = new FoodProperties.Builder()
-            .alwaysEat()
-            .fast()
-            .addChemical(ExampleChemical.INSTANCE, 5f)
-            .build();
+            .alwaysEat().fast().build();
 
-    public static final Item CHEMICAL_PILL = new Item(new Item.Properties().food(CHEMICAL_FOOD));
+    public static final Item CHEMICAL_PILL = new Item(new Item.Properties().food(CHEMICAL_FOOD)
+            .component(ChemicalMap.COMPONENT_TYPE, new ChemicalMap.Builder().add(EXAMPLE_CHEMICAL, 10)));
 
     public static void init() {
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("modid", "chemical_pill"), CHEMICAL_PILL);
@@ -166,6 +165,18 @@ public class ExampleMod implements ModInitializer {
 }
 ```
 
+## Customizing Chemicals In Game
+
+If you want to add Chemicals to an existing item, like say Steak, this can be done in game with item components.  You can specify
+the amounts of each chemical using the `chemicals:chemicals` component, this is an object where the keys are the id of the chemical
+and the elements are `float`s of the amount of the chemical.
+
+````mcfunction
+/give @s minecraft:steak[chemicals:chemicals={"modid:example_chemical":10}]
+````
+
+This command gives the player a steak with 10 units of our example chemical
+
 ## More In-Depth Chemical Items
 
 If you have an item that can have a variable amount of a chemical in it, using NBT data for example, it is best
@@ -173,7 +184,8 @@ to implement `ChemicalContaining` in your Item Class.  This has one method, `get
 the ResourceLocation of the chemical and the ItemStack.  This should calculate the amount of the specified chemical
 in this stack and return it.
 
-In this example, any chemicals in this item are stored in the `Chemicals` object in the item's NBT
+In this example, the item gets the amount of the chemical in the chemical map component type and returns it.  This
+is unneeded because this mod does this already but this is just meant to show what should be done here.
 
 `ExampleItem.java`
 ```java
@@ -185,9 +197,9 @@ public class ExampleItem extends Item implements ChemicalContaining {
 
     @Override
     public float getChemicalContent(ResourceLocation id, ItemStack stack) {
-        CompoundTag chemicals = stack.getOrCreateTagElement("Chemicals");
-        if (chemicals.contains(id.toString())) {
-            return chemicals.getFloat(id.toString());
+        Map<ResourceLocation, Float> chemicals = stack.get(ChemicalMap.COMPONENT_TYPE).chemicals();
+        if (chemicals.containsKey(id)) {
+            return chemicals.get(id);
         }
         return 0;
     }
