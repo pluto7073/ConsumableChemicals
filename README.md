@@ -26,7 +26,7 @@ dependencies {
 
 `gradle.properties`
 ```properties
-chemicals_version=1.0.1
+chemicals_version=1.0.3
 ```
 
 ## Creating a ChemicalHandler
