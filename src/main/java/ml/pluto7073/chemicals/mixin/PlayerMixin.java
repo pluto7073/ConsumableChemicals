@@ -34,6 +34,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@Inject(at = @At("HEAD"), method = "eat")
 	private void chemicals$ConsumeFoodWithChemicals(Level world, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
+		if (world.isClientSide) return;
 		if (!stack.has(ChemicalMap.COMPONENT_TYPE)) return;
 		ChemicalMap chemicals = stack.get(ChemicalMap.COMPONENT_TYPE);
 		if (chemicals == null) return;
