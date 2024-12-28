@@ -1,6 +1,7 @@
 package ml.pluto7073.chemicals.item;
 
 import ml.pluto7073.chemicals.Chemicals;
+import ml.pluto7073.chemicals.component.ChemicalMap
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,7 @@ import java.util.List;
  * or {@link UseAnim#EAT}, any chemicals in the item will be added to the player
  * <p>
  * Note: This interface is intended for items that have a variable amount of chemicals.
- * For Items that will always have the same amount of chemicals, use {@link FoodProperties.Builder#addChemical(ResourceLocation, float)}
+ * For Items that will always have the same amount of chemicals, use {@link ChemicalMap#COMPONENT_TYPE}
  */
 public interface ChemicalContaining {
 
