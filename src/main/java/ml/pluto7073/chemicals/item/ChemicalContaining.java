@@ -1,7 +1,7 @@
 package ml.pluto7073.chemicals.item;
 
 import ml.pluto7073.chemicals.Chemicals;
-import ml.pluto7073.chemicals.component.ChemicalMap
+import ml.pluto7073.chemicals.component.ChemicalMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
