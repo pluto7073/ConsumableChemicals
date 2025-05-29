@@ -32,4 +32,14 @@ public interface ChemicalContaining {
 	 */
 	float getChemicalContent(ResourceLocation id, ItemStack stack);
 
+	/**
+	 * Gets the amount of a specific chemical to actually be consumed upon item use.  Use this if the item is consumed in portions.
+	 * @param id The ID representing the chemical
+	 * @param stack the item
+	 * @return Amount of the desired chemical that should be consumed.
+	 */
+	default float getConsumedChemicalContent(ResourceLocation id, ItemStack stack) {
+		return getChemicalContent(id, stack);
+	}
+
 }
