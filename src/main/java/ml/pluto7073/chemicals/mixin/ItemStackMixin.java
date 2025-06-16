@@ -81,7 +81,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 		UseAnim anim = getItem().getUseAnimation(chem$This());
 		if (!anim.equals(UseAnim.DRINK) && !anim.equals(UseAnim.EAT)) return;
 		for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {
-			handler.add(player, item.getChemicalContent(handler.getId(), chem$This()));
+			handler.add(player, item.getConsumedChemicalContent(handler.getId(), chem$This()));
 		}
 	}
 
