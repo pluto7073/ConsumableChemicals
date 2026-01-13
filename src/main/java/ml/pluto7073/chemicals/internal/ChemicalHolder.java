@@ -1,4 +1,4 @@
-package ml.pluto7073.chemicals.item.internal;
+package ml.pluto7073.chemicals.internal;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface ChemicalHolder {
 
-	@ApiStatus.Internal
 	default void setChemicals(Map<ResourceLocation, Float> chemicals) {}
 
 	default Map<ResourceLocation, Float> getChemicals() {

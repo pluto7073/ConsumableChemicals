@@ -3,7 +3,8 @@ package ml.pluto7073.chemicals.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import ml.pluto7073.chemicals.Chemicals;
-import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
+import ml.pluto7073.chemicals.handlers.ChemicalHandler;
+import ml.pluto7073.chemicals.handlers.ConsumedInstance.AbsorptionType;
 import ml.pluto7073.chemicals.item.ChemicalContaining;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,7 +48,7 @@ public abstract class ItemStackMixin {
 		if (!getItem().isEdible() || getItem().getFoodProperties() == null) return;
 		if (!(context.isCreative() || context.isAdvanced())) return;
 		FoodProperties food = getItem().getFoodProperties();
-		for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {
+		for (ChemicalHandler handler : Chemicals.CHEMICAL_HANDLER) {
 			if (!food.getChemicals().containsKey(handler.getId())) continue;
 			handler.appendTooltip(list, food.getChemicals().get(handler.getId()), chem$This());
 		}
@@ -63,8 +64,8 @@ public abstract class ItemStackMixin {
 	private void chemicals$AddChemicalTooltipForChemicalContaining(Player player, TooltipFlag context, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
 		if (!(getItem() instanceof ChemicalContaining item)) return;
 		if (!(context.isCreative() || context.isAdvanced())) return;
-		Chemicals.REGISTRY.forEach(handler -> {
-			float amount = item.getChemicalContent(handler.getId(), chem$This());
+		Chemicals.CHEMICAL_HANDLER.forEach(handler -> {
+			float amount = item.getChemicalContent(handler.getId(), chem$This(), player.level());
 			if (amount <= 0) return;
 			handler.appendTooltip(list, amount, chem$This());
 		});
@@ -72,11 +73,12 @@ public abstract class ItemStackMixin {
 
 	@Inject(at = @At("HEAD"), method = "finishUsingItem")
 	private void chemicals$AddChemicalsToPlayer(Level level, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
-		if (!(user instanceof Player player) || level.isClientSide || !(getItem() instanceof ChemicalContaining item)) return;
+		if (!(user instanceof Player player) || level.isClientSide || !(getItem() instanceof ChemicalContaining)) return;
 		UseAnim anim = getItem().getUseAnimation(chem$This());
 		if (!anim.equals(UseAnim.DRINK) && !anim.equals(UseAnim.EAT)) return;
-		for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {
-			handler.add(player, item.getConsumedChemicalContent(handler.getId(), chem$This()));
+		AbsorptionType type = anim == UseAnim.DRINK ? AbsorptionType.DRINK : AbsorptionType.EAT;
+		for (ChemicalHandler handler : Chemicals.CHEMICAL_HANDLER) {
+			player.addChemical(handler.createInstance(type, chem$This(), level));
 		}
 	}
 

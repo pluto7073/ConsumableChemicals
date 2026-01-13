@@ -1,6 +1,6 @@
-package ml.pluto7073.chemicals.item.internal;
+package ml.pluto7073.chemicals.internal;
 
-import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
+import ml.pluto7073.chemicals.handlers.ChemicalHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.food.FoodProperties;
 
@@ -10,7 +10,7 @@ public interface ChemicalHolderBuilder {
 		return null;
 	}
 
-	default FoodProperties.Builder addChemical(ConsumableChemicalHandler handler, float amount) {
+	default FoodProperties.Builder addChemical(ChemicalHandler handler, float amount) {
 		return addChemical(handler.getId(), amount);
 	}
 

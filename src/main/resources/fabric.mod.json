@@ -20,8 +20,9 @@
   },
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_4174": [ "ml/pluto7073/chemicals/item/internal/ChemicalHolder" ],
-      "net/minecraft/class_4174$class_4175": [ "ml/pluto7073/chemicals/item/internal/ChemicalHolderBuilder" ]
+      "net/minecraft/class_4174": [ "ml/pluto7073/chemicals/internal/ChemicalHolder" ],
+      "net/minecraft/class_4174\u0024class_4175": [ "ml/pluto7073/chemicals/internal/ChemicalHolderBuilder" ],
+      "net/minecraft/class_1657": [ "ml/pluto7073/chemicals/internal/ChemicalConsumer" ]
     }
   },
   "accessWidener": "chemicals.accesswidener",
@@ -32,5 +33,8 @@
     "fabricloader": ">=${loader_version}",
     "fabric-api": ">=${fabric_version}",
     "minecraft": "${minecraft_dependency}"
+  },
+  "breaks": {
+    "pdapi": "<=0.3.14"
   }
 }

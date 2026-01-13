@@ -2,8 +2,8 @@ package ml.pluto7073.chemicals.mixin;
 
 import com.google.common.collect.ImmutableMap;
 
-import ml.pluto7073.chemicals.item.internal.ChemicalHolder;
-import ml.pluto7073.chemicals.item.internal.ChemicalHolderBuilder;
+import ml.pluto7073.chemicals.internal.ChemicalHolder;
+import ml.pluto7073.chemicals.internal.ChemicalHolderBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.food.FoodProperties;
 
@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(FoodProperties.class)
 public class FoodPropertiesMixin implements ChemicalHolder {
 

@@ -2,7 +2,7 @@
 //file:noinspection GroovyAccessibility
 //file:noinspection GradlePackageVersionRange
 plugins {
-	id "fabric-loom" version "1.6.+"
+	id "fabric-loom" version "1.10.+"
 	id "maven-publish"
 }
 
@@ -12,7 +12,7 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = archives_base_name
 group = maven_group
 
-version = minecraft_version + "+" + mod_version
+version = minecraft_version + "+" + mod_version + "." + build_number
 
 repositories {
 	maven { url = "https://maven.quiltmc.org/repository/release" }
@@ -28,9 +28,9 @@ dependencies {
 	mappings(loom.layered {
 		if (qm_version != "none")
 			it.mappings("org.quiltmc:quilt-mappings:$minecraft_version+build.$qm_version:intermediary-v2")
+		it.officialMojangMappings { nameSyntheticMembers = false }
 		if (parchment_version != "none")
 			it.parchment("org.parchmentmc.data:parchment-$minecraft_version:$parchment_version@zip")
-		it.officialMojangMappings { nameSyntheticMembers = false }
 	})
 	modImplementation("net.fabricmc:fabric-loader:$loader_version")
 
@@ -42,6 +42,9 @@ dependencies {
 
 	// dependencies
 	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_version")
+
+	modCompileOnly("maven.modrinth:cloth-config:$cloth_config_version")
+	modCompileOnly("com.terraformersmc:modmenu:$modmenu_version") { exclude(group: "net.fabricmc"); exclude(group: "net.fabricmc.fabric-api") }
 }
 
 tasks.register("buildOrPublish") {
@@ -58,11 +61,10 @@ tasks.register("buildOrPublish") {
 
 processResources {
 	Map<String, String> properties = new HashMap<>()
-	properties.put("version", mod_version)
+	properties.put("version", mod_version + "." + build_number)
 	properties.put("loader_version", loader_version)
 	properties.put("fabric_version", fabric_version)
 	properties.put("minecraft_dependency", minecraft_dependency)
-	properties.put("class_4175", "\$class_4175")
 
 	properties.forEach((k, v) -> inputs.property(k, v))
 
