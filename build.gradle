@@ -16,8 +16,8 @@ archivesBaseName = archives_base_name
 group = maven_group
 
 static String getBuildNo() {
-	if (System.getenv().containsKey("GITHUB_RUN_NO")) {
-		return "+build." + System.getenv("GITHUB_RUN_NO")
+	if (System.getenv().containsKey("GITHUB_RUN_NUMBER")) {
+		return "+build." + System.getenv("GITHUB_RUN_NUMBER")
 	} else {
 		return "+dev"
 	}
