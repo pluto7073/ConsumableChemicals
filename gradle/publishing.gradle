@@ -56,7 +56,7 @@ publishing {
 curseforge {
 	apiKey = System.getenv("CURSE_TOKEN") ?: "unset"
 	project {
-		id = "407793"
+		id = "1178991"
 		changelog = changelog_text
 		releaseType = 'release'
 		for (final def version in project.minecraft_dependency.split(',')) {
