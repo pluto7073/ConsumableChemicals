@@ -78,7 +78,7 @@ processResources {
 	properties.put("version", mod_version)
 	properties.put("loader_version", loader_version)
 	properties.put("fabric_version", fabric_version)
-	properties.put("minecraft_dependency", minecraft_dependency)
+	properties.put("minecraft_dependency", minecraft_version)
 
 	properties.forEach((k, v) -> inputs.property(k, v))
 
