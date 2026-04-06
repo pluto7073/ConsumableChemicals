@@ -4,6 +4,9 @@
 plugins {
 	id "fabric-loom" version "1.10.+"
 	id "maven-publish"
+	id "com.modrinth.minotaur" version "2.+"
+	id "com.github.breadmoirai.github-release" version "2.+"
+	id "com.matthewprenger.cursegradle" version "1.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -12,7 +15,15 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = archives_base_name
 group = maven_group
 
-version = minecraft_version + "+" + mod_version + "." + build_number
+static String getBuildNo() {
+	if (System.getenv().containsKey("GITHUB_RUN_NO")) {
+		return "+build." + System.getenv("GITHUB_RUN_NO")
+	} else {
+		return "+dev"
+	}
+}
+
+version = minecraft_version + "+" + mod_version + getBuildNo()
 
 repositories {
 	maven { url = "https://maven.quiltmc.org/repository/release" }
@@ -127,23 +138,4 @@ jar {
 	}
 }
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			artifactId = 'chemicals'
-
-			from components.java
-
-			pom.withXml {
-				Node pom = asNode()
-				pom.dependencies.'*'.each() {
-					it.parent().remove(it)
-				}
-			}
-		}
-	}
-
-	repositories {
-		maven { url = System.getenv("PUBLISH_LOCATION") }
-	}
-}
+apply from: "gradle/publishing.gradle"

@@ -44,7 +44,7 @@ public abstract class ItemStackMixin {
 							"Lnet/minecraft/world/level/Level;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V"),
 			method = "getTooltipLines"
 	)
-	private void chemicals$AddChemicalTooltipForFood(Player player, TooltipFlag context, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+	private void chemicals$AddChemicalTooltipForFood(Player player, TooltipFlag context, CallbackInfoReturnable<List<Component>> cir, @Local(name = "list") List<Component> list) {
 		if (!getItem().isEdible() || getItem().getFoodProperties() == null) return;
 		if (!(context.isCreative() || context.isAdvanced())) return;
 		FoodProperties food = getItem().getFoodProperties();
@@ -61,9 +61,10 @@ public abstract class ItemStackMixin {
 							"Lnet/minecraft/world/level/Level;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V"),
 			method = "getTooltipLines"
 	)
-	private void chemicals$AddChemicalTooltipForChemicalContaining(Player player, TooltipFlag context, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+	private void chemicals$AddChemicalTooltipForChemicalContaining(Player player, TooltipFlag context, CallbackInfoReturnable<List<Component>> cir, @Local(name = "list") List<Component> list) {
 		if (!(getItem() instanceof ChemicalContaining item)) return;
 		if (!(context.isCreative() || context.isAdvanced())) return;
+		if (player == null) return;
 		Chemicals.CHEMICAL_HANDLER.forEach(handler -> {
 			float amount = item.getChemicalContent(handler.getId(), chem$This(), player.level());
 			if (amount <= 0) return;

@@ -16,9 +16,6 @@
   "entrypoints": {
     "main": [
       "ml.pluto7073.chemicals_test.ExampleModTest"
-    ],
-    "fabric-gametest": [
-      "ml.pluto7073.chemicals_test.gametest.ExampleModGameTest"
     ]
   }
 }

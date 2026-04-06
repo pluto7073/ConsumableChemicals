@@ -234,7 +234,7 @@ public abstract class ChemicalHandler {
 	 */
 	public ConsumedInstance createInstance(AbsorptionType type, ItemStack stack, Level level) {
 		if (!(stack.getItem() instanceof ChemicalContaining item)) return new ConsumedInstance(this, type, 0);
-		return new ConsumedInstance(this, type, item.getChemicalContent(getId(), stack, level));
+		return new ConsumedInstance(this, type, item.getConsumedChemicalContent(getId(), stack, level));
 	}
 
 	public void contrast(Vector4f rgba, Player player) {}
