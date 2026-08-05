@@ -2,7 +2,6 @@ package ml.pluto7073.chemicals;
 
 import ml.pluto7073.chemicals.commands.ChemicalCommands;
 import ml.pluto7073.chemicals.component.ChemicalMap;
-import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
 import ml.pluto7073.chemicals.handlers.ChemicalHandler;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.DefaultedRegistry;

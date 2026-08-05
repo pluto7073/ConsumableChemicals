@@ -33,7 +33,7 @@ public abstract class PlayerMixin extends LivingEntity implements ChemicalConsum
 
 	@Inject(at = @At("TAIL"), method = "defineSynchedData")
 	private void chemicals$DefineChemicalTrackers(SynchedEntityData.Builder builder, CallbackInfo ci) {
-		Chemicals.REGISTRY.forEach(handler -> handler.defineDataForPlayer(builder));
+		Chemicals.CHEMICAL_HANDLER.forEach(handler -> handler.defineDataForPlayer(builder));
 	}
 
 	@Inject(at = @At("HEAD"), method = "eat")
@@ -42,8 +42,9 @@ public abstract class PlayerMixin extends LivingEntity implements ChemicalConsum
 		if (!stack.has(ChemicalMap.COMPONENT_TYPE)) return;
 		ChemicalMap chemicals = stack.get(ChemicalMap.COMPONENT_TYPE);
 		if (chemicals == null) return;
-		chemicals.chemicals().forEach((id, amount) ->
-				Objects.requireNonNull(Chemicals.REGISTRY.get(id)).add((Player) (Object) this, amount));
+		if (stack.getUseAnimation() != UseAnim.DRINK && stack.getUseAnimation() != UseAnim.EAT) return;
+		AbsorptionType type = stack.getUseAnimation() == UseAnim.DRINK ? AbsorptionType.DRINK : AbsorptionType.EAT;
+		chemicals.chemicals().forEach((id, amount) -> addChemical(Chemicals.CHEMICAL_HANDLER.get(id), type, amount));
 	}
 
 	@SuppressWarnings("AddedMixinMembersNamePattern")

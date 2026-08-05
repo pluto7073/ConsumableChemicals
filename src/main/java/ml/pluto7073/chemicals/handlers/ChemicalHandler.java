@@ -64,9 +64,6 @@ public abstract class ChemicalHandler {
 				}
 
 				@Override
-				public float add(Player player, float amount) { return 0; }
-
-				@Override
 				public void set(Player player, float amount) {}
 			});
 

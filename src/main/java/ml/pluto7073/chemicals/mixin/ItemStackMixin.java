@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 
 import ml.pluto7073.chemicals.Chemicals;
 import ml.pluto7073.chemicals.component.ChemicalMap;
-import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
 import ml.pluto7073.chemicals.handlers.ChemicalHandler;
 import ml.pluto7073.chemicals.handlers.ConsumedInstance.AbsorptionType;
 import ml.pluto7073.chemicals.item.ChemicalContaining;
@@ -54,7 +53,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 		if (!has(ChemicalMap.COMPONENT_TYPE)) return;
 		ChemicalMap chemicals = get(ChemicalMap.COMPONENT_TYPE);
 		if (chemicals == null) return;
-		chemicals.chemicals().forEach((id, amount) -> Chemicals.REGISTRY.getOptional(id)
+		chemicals.chemicals().forEach((id, amount) -> Chemicals.CHEMICAL_HANDLER.getOptional(id)
 				.ifPresent(handler -> handler.appendTooltip(list, amount, chem$This())));
 	}
 
@@ -70,8 +69,8 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 	private void chemicals$AddChemicalTooltipForChemicalContaining(Item.TooltipContext context, Player player, TooltipFlag config, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
 		if (!(getItem() instanceof ChemicalContaining item)) return;
 		if (!(config.isCreative() || config.isAdvanced())) return;
-		Chemicals.REGISTRY.forEach(handler -> {
-			float amount = item.getChemicalContent(handler.getId(), chem$This());
+		Chemicals.CHEMICAL_HANDLER.forEach(handler -> {
+			float amount = item.getChemicalContent(handler.getId(), chem$This(), player.level());
 			if (amount <= 0) return;
 			handler.appendTooltip(list, amount, chem$This());
 		});

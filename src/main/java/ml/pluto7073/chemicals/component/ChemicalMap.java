@@ -20,7 +20,7 @@ public record ChemicalMap(Map<ResourceLocation, Float> chemicals) {
 
 	public static final Codec<ChemicalMap> CODEC = Codec.simpleMap(
 			ResourceLocation.CODEC, Codec.FLOAT,
-			Keyable.forStrings(() -> Chemicals.REGISTRY.keySet().stream().map(ResourceLocation::toString))
+			Keyable.forStrings(() -> Chemicals.CHEMICAL_HANDLER.keySet().stream().map(ResourceLocation::toString))
 	).xmap(ChemicalMap::new, ChemicalMap::chemicals).codec();
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, ChemicalMap> STREAM_CODEC =

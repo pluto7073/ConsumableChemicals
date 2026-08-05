@@ -20,7 +20,7 @@ public class ExampleModTest implements ModInitializer {
 
 	public static final Item WATER_PILL_ITEM = new Item(new Item.Properties()
 			.component(ChemicalMap.COMPONENT_TYPE,
-					new ChemicalMap.Builder().add(id("water"), 100f).build())
+					new ChemicalMap.Builder().add(id("caffeine"), 100f).build())
 			.food(new FoodProperties.Builder().fast().alwaysEdible().build()));
 
 	@Override
