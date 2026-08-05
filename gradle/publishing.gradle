@@ -63,6 +63,8 @@ curseforge {
 			addGameVersion(version)
 		}
 		addGameVersion("Fabric")
+		addGameVersion("Client")
+		addGameVersion("Server")
 		relations {
 			requiredDependency("fabric-api")
 		}
