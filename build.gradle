@@ -1,4 +1,4 @@
-//file:noinspection GroovyAssignabilityCheck
+*//file:noinspection GroovyAssignabilityCheck
 //file:noinspection GroovyAccessibility
 //file:noinspection GradlePackageVersionRange
 plugins {

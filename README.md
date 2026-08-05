@@ -26,7 +26,8 @@ dependencies {
 
 `gradle.properties`
 ```properties
-chemicals_version=1.0.3
+# See Modrinth
+chemicals_version=2.0.2
 ```
 
 ## Creating a ChemicalHandler
