@@ -5,6 +5,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import ml.pluto7073.chemicals.Chemicals;
 import ml.pluto7073.chemicals.component.ChemicalMap;
 import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
+import ml.pluto7073.chemicals.handlers.ChemicalHandler;
+import ml.pluto7073.chemicals.handlers.ConsumedInstance.AbsorptionType;
 import ml.pluto7073.chemicals.item.ChemicalContaining;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponents;
@@ -77,11 +79,12 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 
 	@Inject(at = @At("HEAD"), method = "finishUsingItem")
 	private void chemicals$AddChemicalsToPlayer(Level level, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
-		if (!(user instanceof Player player) || level.isClientSide || !(getItem() instanceof ChemicalContaining item)) return;
+		if (!(user instanceof Player player) || level.isClientSide || !(getItem() instanceof ChemicalContaining)) return;
 		UseAnim anim = getItem().getUseAnimation(chem$This());
 		if (!anim.equals(UseAnim.DRINK) && !anim.equals(UseAnim.EAT)) return;
-		for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {
-			handler.add(player, item.getConsumedChemicalContent(handler.getId(), chem$This()));
+		AbsorptionType type = anim == UseAnim.DRINK ? AbsorptionType.DRINK : AbsorptionType.EAT;
+		for (ChemicalHandler handler : Chemicals.CHEMICAL_HANDLER) {
+			player.addChemical(handler.createInstance(type, chem$This(), level));
 		}
 	}
 

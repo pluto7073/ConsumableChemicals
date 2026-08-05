@@ -19,7 +19,9 @@
     ]
   },
   "custom": {
-    "loom:injected_interfaces": {}
+    "loom:injected_interfaces": {
+      "net/minecraft/class_1657": [ "ml/pluto7073/chemicals/internal/ChemicalConsumer" ]
+    }
   },
   "accessWidener": "chemicals.accesswidener",
   "mixins": [
@@ -28,6 +30,9 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": ">=${fabric_version}",
-    "minecraft": "${minecraft_dependency}"
+    "minecraft": "~${minecraft_dependency}"
+  },
+  "breaks": {
+    "pdapi": "<=0.3.14"
   }
 }

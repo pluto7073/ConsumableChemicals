@@ -1,0 +1,92 @@
+import java.nio.file.Files
+
+String getChangelog() {
+	String base = Files.readString(file("CHANGELOG.md").toPath())
+	return base.split("---")[0].trim()
+}
+
+ext {
+	changelog_text = getChangelog()
+}
+
+tasks.register("publishMod") {
+	group "publishing"
+	dependsOn(tasks.modrinth)
+	dependsOn(tasks.githubRelease)
+	dependsOn(tasks.curseforge)
+}
+
+
+// Github Release
+
+tasks.githubRelease.dependsOn(tasks.build)
+githubRelease {
+	token = System.getenv("GH_TOKEN") ?: ""
+	targetCommitish = "1.20"
+	body = changelog_text
+	releaseAssets = [file("build/libs/${archives_base_name}-${version}.jar") , file("build/libs/${archives_base_name}-${version}-sources.jar")]
+	repo = "ConsumableChemicals"
+}
+
+// Maven Publish
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId = 'chemicals'
+
+			from components.java
+
+			pom.withXml {
+				Node pom = asNode()
+				pom.dependencies.'*'.each() {
+					it.parent().remove(it)
+				}
+			}
+		}
+	}
+
+	repositories {
+		maven { url = System.getenv("PUBLISH_LOCATION") }
+	}
+}
+
+// Curseforge
+
+curseforge {
+	apiKey = System.getenv("CURSE_TOKEN") ?: "unset"
+	project {
+		id = "1178991"
+		changelog = changelog_text
+		releaseType = 'release'
+		for (final def version in project.minecraft_dependency.split(',')) {
+			addGameVersion(version)
+		}
+		addGameVersion("Fabric")
+		relations {
+			requiredDependency("fabric-api")
+		}
+		mainArtifact(file("build/libs/${remapJar.archiveBaseName.get()}-${version}.jar")) {
+			displayName = version
+		}
+		afterEvaluate {
+			uploadTask.dependsOn(tasks.remapJar)
+		}
+	}
+	curseGradleOptions.forgeGradleIntegration = false
+}
+
+// Modrinth
+
+modrinth {
+	token = System.getenv("MODRINTH_TOKEN")
+	projectId = "chemicals"
+	uploadFile = file("build/libs/${remapJar.archiveBaseName.get()}-${version}.jar")
+	additionalFiles = [ file("build/libs/${remapJar.archiveBaseName.get()}-${version}-sources.jar") ]
+	gameVersions = project.minecraft_dependency.split(',').toList()
+	dependencies {
+		required.project "fabric-api"
+	}
+	loaders = [ "fabric" ]
+	changelog = changelog_text
+}

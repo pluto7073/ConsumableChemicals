@@ -1,9 +1,12 @@
-//file:noinspection GroovyAssignabilityCheck
+*//file:noinspection GroovyAssignabilityCheck
 //file:noinspection GroovyAccessibility
 //file:noinspection GradlePackageVersionRange
 plugins {
-	id "fabric-loom" version "1.7.+"
+	id "fabric-loom" version "1.10.+"
 	id "maven-publish"
+	id "com.modrinth.minotaur" version "2.+"
+	id "com.github.breadmoirai.github-release" version "2.+"
+	id "com.matthewprenger.cursegradle" version "1.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_21
@@ -12,7 +15,17 @@ targetCompatibility = JavaVersion.VERSION_21
 archivesBaseName = archives_base_name
 group = maven_group
 
-version = minecraft_version + "+" + mod_version
+static String getBuildNo() {
+	if (System.getenv().containsKey("GITHUB_RUN_NUMBER")) {
+		return "+build." + System.getenv("GITHUB_RUN_NUMBER")
+	} else {
+		return "+dev"
+	}
+}
+
+version = minecraft_version + "+" + mod_version + getBuildNo()
+
+System.out.println("Version: " + version)
 
 repositories {
 	maven { url = "https://maven.quiltmc.org/repository/release" }
@@ -20,7 +33,8 @@ repositories {
 	maven { url = "https://maven.bai.lol" }
 	maven { url = "https://maven.terraformersmc.com/releases/" }
 	maven { url = "https://maven.shedaniel.me/" }
-	maven { url "https://maven.nucleoid.xyz/" }
+	maven { url = "https://maven.parchmentmc.org" } // Parchment
+	maven { url = "https://maven.nucleoid.xyz/" }
 }
 
 dependencies {
@@ -29,9 +43,9 @@ dependencies {
 	mappings(loom.layered {
 		if (qm_version != "none")
 			it.mappings("org.quiltmc:quilt-mappings:$minecraft_version+build.$qm_version:intermediary-v2")
+		it.officialMojangMappings { nameSyntheticMembers = false }
 		if (parchment_version != "none")
 			it.parchment("org.parchmentmc.data:parchment-$minecraft_version:$parchment_version@zip")
-		it.officialMojangMappings { nameSyntheticMembers = false }
 	})
 	modImplementation("net.fabricmc:fabric-loader:$loader_version")
 
@@ -43,6 +57,9 @@ dependencies {
 
 	// dependencies
 	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_version")
+
+	modCompileOnly("maven.modrinth:cloth-config:$cloth_config_version")
+	modCompileOnly("com.terraformersmc:modmenu:$modmenu_version") { exclude(group: "net.fabricmc"); exclude(group: "net.fabricmc.fabric-api") }
 }
 
 tasks.register("buildOrPublish") {
@@ -62,8 +79,7 @@ processResources {
 	properties.put("version", mod_version)
 	properties.put("loader_version", loader_version)
 	properties.put("fabric_version", fabric_version)
-	properties.put("minecraft_dependency", minecraft_dependency)
-	properties.put("class_4175", "\$class_4175")
+	properties.put("minecraft_dependency", minecraft_version)
 
 	properties.forEach((k, v) -> inputs.property(k, v))
 
@@ -126,23 +142,4 @@ jar {
 	}
 }
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			artifactId = 'chemicals'
-
-			from components.java
-
-			pom.withXml {
-				Node pom = asNode()
-				pom.dependencies.'*'.each() {
-					it.parent().remove(it)
-				}
-			}
-		}
-	}
-
-	repositories {
-		maven { url = System.getenv("PUBLISH_LOCATION") }
-	}
-}
+apply from: "gradle/publishing.gradle"

@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import ml.pluto7073.chemicals.Chemicals;
-import ml.pluto7073.chemicals.handlers.ConsumableChemicalHandler;
+import ml.pluto7073.chemicals.handlers.ChemicalHandler;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -19,8 +19,8 @@ public class ChemicalCommands {
 	public static void register() {
 		CommandRegistrationCallback.EVENT.register((dispatcher, context, selection) -> {
 			LiteralArgumentBuilder<CommandSourceStack> chemicals = literal("chemicals");
-			for (ConsumableChemicalHandler handler : Chemicals.REGISTRY) {
-				if (handler.getId().getPath().equals("empty")) continue;
+			for (ChemicalHandler handler : Chemicals.CHEMICAL_HANDLER) {
+				if (handler.getId().getPath().equals("air")) continue;
 				LiteralArgumentBuilder<CommandSourceStack> custom = handler.createCustomChemicalCommandExtension();
 				chemicals.then(custom != null ? custom : createChemicalCommand(handler));
 			}
@@ -28,14 +28,14 @@ public class ChemicalCommands {
 		});
 	}
 
-	private static LiteralArgumentBuilder<CommandSourceStack> createChemicalCommand(ConsumableChemicalHandler handler) {
+	private static LiteralArgumentBuilder<CommandSourceStack> createChemicalCommand(ChemicalHandler handler) {
 		return literal(handler.getId().toString())
 				.then(createGetCommand(handler))
 				.then(createSetCommand(handler))
 				.then(createChangeCommand(handler));
 	}
 
-	private static LiteralArgumentBuilder<CommandSourceStack> createGetCommand(ConsumableChemicalHandler handler) {
+	private static LiteralArgumentBuilder<CommandSourceStack> createGetCommand(ChemicalHandler handler) {
 		return literal("get")
 				.then(argument("target", EntityArgument.player())
 					.executes(ctx -> {
@@ -44,11 +44,11 @@ public class ChemicalCommands {
 						ctx.getSource().sendSuccess(() ->
 								Component.translatable("command.chemical.get.response", target.getName(), amount,
 										Component.translatable(handler.getLanguageKey())), true);
-						return 1;
+						return (int) handler.get(target);
 					}));
 	}
 
-	private static LiteralArgumentBuilder<CommandSourceStack> createSetCommand(ConsumableChemicalHandler handler) {
+	private static LiteralArgumentBuilder<CommandSourceStack> createSetCommand(ChemicalHandler handler) {
 		return literal("set")
 				.then(argument("target", EntityArgument.player())
 				.then(argument("amount", FloatArgumentType.floatArg(0))
@@ -63,7 +63,7 @@ public class ChemicalCommands {
 						})));
 	}
 
-	private static LiteralArgumentBuilder<CommandSourceStack> createChangeCommand(ConsumableChemicalHandler handler) {
+	private static LiteralArgumentBuilder<CommandSourceStack> createChangeCommand(ChemicalHandler handler) {
 		return literal("change")
 				.then(argument("target", EntityArgument.player())
 				.then(argument("amount", FloatArgumentType.floatArg())
