@@ -69,6 +69,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 	private void chemicals$AddChemicalTooltipForChemicalContaining(Item.TooltipContext context, Player player, TooltipFlag config, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
 		if (!(getItem() instanceof ChemicalContaining item)) return;
 		if (!(config.isCreative() || config.isAdvanced())) return;
+		if (player == null) return;
 		Chemicals.CHEMICAL_HANDLER.forEach(handler -> {
 			float amount = item.getChemicalContent(handler.getId(), chem$This(), player.level());
 			if (amount <= 0) return;

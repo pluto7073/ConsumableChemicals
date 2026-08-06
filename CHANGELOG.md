@@ -1,4 +1,9 @@
 
+## Fixes
+- Crash in ItemStack when player is null that was fixed on the 1.20 branch but missed in the port
+
+---
+
 ## Additions
 - Added different consumption types
   - Instant (No Delay)
