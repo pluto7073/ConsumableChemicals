@@ -34,7 +34,7 @@ public class Chemicals implements ModInitializer {
 	}
 
 	public static ResourceLocation id(String id) {
-		return new ResourceLocation(MOD_ID, id);
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, id);
 	}
 
 	public static Collection<ChemicalHandler> getAllChemicals() {

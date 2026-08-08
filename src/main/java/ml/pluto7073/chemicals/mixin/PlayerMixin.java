@@ -37,13 +37,13 @@ public abstract class PlayerMixin extends LivingEntity implements ChemicalConsum
 	}
 
 	@Inject(at = @At("HEAD"), method = "eat")
-	private void chemicals$ConsumeFoodWithChemicals(Level world, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
-		if (world.isClientSide) return;
-		if (!stack.has(ChemicalMap.COMPONENT_TYPE)) return;
-		ChemicalMap chemicals = stack.get(ChemicalMap.COMPONENT_TYPE);
+	private void chemicals$ConsumeFoodWithChemicals(Level level, ItemStack food, FoodProperties foodProperties, CallbackInfoReturnable<ItemStack> cir) {
+		if (level.isClientSide) return;
+		if (!food.has(ChemicalMap.COMPONENT_TYPE)) return;
+		ChemicalMap chemicals = food.get(ChemicalMap.COMPONENT_TYPE);
 		if (chemicals == null) return;
-		if (stack.getUseAnimation() != UseAnim.DRINK && stack.getUseAnimation() != UseAnim.EAT) return;
-		AbsorptionType type = stack.getUseAnimation() == UseAnim.DRINK ? AbsorptionType.DRINK : AbsorptionType.EAT;
+		if (food.getUseAnimation() != UseAnim.DRINK && food.getUseAnimation() != UseAnim.EAT) return;
+		AbsorptionType type = food.getUseAnimation() == UseAnim.DRINK ? AbsorptionType.DRINK : AbsorptionType.EAT;
 		chemicals.chemicals().forEach((id, amount) -> addChemical(Chemicals.CHEMICAL_HANDLER.get(id), type, amount));
 	}
 

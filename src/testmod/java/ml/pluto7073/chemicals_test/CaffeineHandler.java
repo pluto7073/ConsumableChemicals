@@ -46,7 +46,7 @@ public class CaffeineHandler extends HalfLifeChemicalHandler {
 			list.add(new MobEffectInstance(MobEffects.HUNGER, 600));
 		}
 		if (amount >= 400 && FabricLoader.getInstance().isModLoaded("dehydration")) {
-			list.add(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.getHolder(new ResourceLocation("dehydration:thirst_effect")).orElseThrow(),
+			list.add(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse("dehydration:thirst_effect")).orElseThrow(),
 					600, 0));
 		}
 		if (amount >= 450) {

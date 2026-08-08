@@ -66,7 +66,7 @@ public class ConsumedInstance {
 	}
 
 	public static ConsumedInstance load(CompoundTag tag) {
-		ChemicalHandler handler = Chemicals.CHEMICAL_HANDLER.get(new ResourceLocation(tag.getString("Chemical")));
+		ChemicalHandler handler = Chemicals.CHEMICAL_HANDLER.get(ResourceLocation.parse(tag.getString("Chemical")));
 		AbsorptionType type = AbsorptionType.valueOf(tag.getString("Type"));
 		float total = tag.getFloat("Total");
 		float remaining = tag.getFloat("Remaining");

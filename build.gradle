@@ -52,7 +52,7 @@ dependencies {
 	// dev env
 	modLocalRuntime("maven.modrinth:suggestion-tweaker:$suggestion_tweaker_version")
 	modLocalRuntime("maven.modrinth:cloth-config:$cloth_config_version") { exclude(group: "net.fabricmc.fabric-api") }
-	modLocalRuntime("maven.modrinth:jade:$jade_version")
+	//modLocalRuntime("maven.modrinth:jade:$jade_version")
 	modLocalRuntime("com.terraformersmc:modmenu:$modmenu_version") { exclude(group: "net.fabricmc"); exclude(group: "net.fabricmc.fabric-api") }
 
 	// dependencies

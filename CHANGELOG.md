@@ -1,4 +1,9 @@
 
+## Changes
+- Updated to 1.21 (Private `ResourceLocation` constructor)
+
+---
+
 ## Additions
 - Added different consumption types
   - Instant (No Delay)
