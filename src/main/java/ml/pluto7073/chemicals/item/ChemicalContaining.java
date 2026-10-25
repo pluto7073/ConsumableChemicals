@@ -4,6 +4,7 @@ import ml.pluto7073.chemicals.Chemicals;
 import ml.pluto7073.chemicals.component.ChemicalMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -39,7 +40,7 @@ public interface ChemicalContaining {
 	 * @param stack the item
 	 * @return Amount of the desired chemical that should be consumed.
 	 */
-	default float getConsumedChemicalContent(ResourceLocation id, ItemStack stack, Level level) {
+	default float getConsumedChemicalContent(ResourceLocation id, Player player, ItemStack stack, Level level) {
 		return getChemicalContent(id, stack, level);
 	}
 

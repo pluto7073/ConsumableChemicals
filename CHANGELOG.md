@@ -1,5 +1,10 @@
 
 ## Changes
+- `ChemicalContaining.getConsumedChemicalContent` now takes the Player as an argument
+
+---
+
+## Changes
 - Updated to 1.21 (Private `ResourceLocation` constructor)
 
 ---
