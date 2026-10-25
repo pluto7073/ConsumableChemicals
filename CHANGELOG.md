@@ -1,4 +1,9 @@
 
+## Changes
+- `ChemicalContaining.getConsumedChemicalContent` now takes the Player as an argument
+
+---
+
 ## Additions
 - Added different consumption types
   - Instant (No Delay)
